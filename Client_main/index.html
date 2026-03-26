@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>GDG - WCE</title>
+    <meta name="description" content="This is the Official Website Of GDG-WCE" />
+
+    <link rel="icon" href="/logo.svg">
+
+    <meta property="og:title" content="GDG-WCE Official Web" />
+    <meta property="og:type" content="website" />
+
+    <script>
+      (function() {
+        try {
+          // Check localStorage for the key used in your ThemeContext
+          const savedTheme = localStorage.getItem('gdg-theme');
+          
+          // If the theme is dark, or if there's no saved theme (since we want dark default)
+          if (savedTheme === 'dark' || !savedTheme) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.backgroundColor = '#020817'; // Match your dark background hex
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.backgroundColor = '#ffffff';
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+
+  <body class="bg-background text-foreground">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

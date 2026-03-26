@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Google Light Theme */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 13%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 13%;
+
+    /* Google Blue */
+    --primary: 217 89% 61%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 0 0% 13%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 220 14% 96%;
+    --accent-foreground: 0 0% 13%;
+
+    --destructive: 4 90% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 89% 61%;
+
+    --radius: 0.75rem;
+
+    /* Google Brand Colors */
+    --google-blue: 217 89% 61%;
+    --google-red: 4 90% 58%;
+    --google-yellow: 43 96% 56%;
+    --google-green: 142 69% 45%;
+
+    /* Custom properties */
+    --nav-height: 64px;
+    --shadow-card: 0 1px 3px 0 rgb(60 64 67 / 0.15), 0 4px 8px 3px rgb(60 64 67 / 0.08);
+    --shadow-elevated: 0 2px 6px 2px rgb(60 64 67 / 0.15), 0 8px 24px 8px rgb(60 64 67 / 0.1);
+  }
+
+  .dark {
+    /* Google Dark Theme */
+    --background: 210 11% 11%;
+    --foreground: 0 0% 95%;
+
+    --card: 210 11% 15%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 210 11% 15%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 217 89% 61%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 11% 20%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 210 11% 20%;
+    --muted-foreground: 0 0% 65%;
+
+    --accent: 210 11% 20%;
+    --accent-foreground: 0 0% 95%;
+
+    --destructive: 4 90% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 11% 25%;
+    --input: 210 11% 25%;
+    --ring: 217 89% 61%;
+
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 4px 8px 3px rgb(0 0 0 / 0.2);
+    --shadow-elevated: 0 2px 6px 2px rgb(0 0 0 / 0.3), 0 8px 24px 8px rgb(0 0 0 / 0.25);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Roboto', 'Google Sans', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Google Sans', 'Roboto', sans-serif;
+  }
+}
+
+@layer utilities {
+  .google-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--google-blue)) 0%,
+      hsl(var(--google-red)) 25%,
+      hsl(var(--google-yellow)) 50%,
+      hsl(var(--google-green)) 75%,
+      hsl(var(--google-blue)) 100%
+    );
+  }
+
+  .google-text-gradient {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--google-blue)) 0%,
+      hsl(var(--google-red)) 33%,
+      hsl(var(--google-yellow)) 66%,
+      hsl(var(--google-green)) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card-shadow {
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-shadow-hover {
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out forwards;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

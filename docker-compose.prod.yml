@@ -1,0 +1,40 @@
+services:
+
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./Nginx/sites:/etc/nginx/conf.d:ro
+      - ./certbot/www/:/var/www/certbot/:ro
+      - ./data/certbot:/etc/letsencrypt
+    depends_on:
+      - client_admin
+      - client_main
+      - server
+    restart: always
+  
+  server:
+    image: dhanraj11/gdg-website-server:latest
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - S3_BUCKET_NAME=${S3_BUCKET_NAME}
+    restart: always
+
+  client_admin:
+    image: dhanraj11/gdg-website-client-admin:latest
+    depends_on:
+      - server
+    restart: always
+
+  client_main:
+    image: dhanraj11/gdg-website-client-main:latest
+    depends_on:
+      - server
+    restart: always
+  
