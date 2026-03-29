@@ -26,8 +26,8 @@ jobs:
           file: ./Docker/dockerfile.server
           push: true
           tags: |
-            dhanraj11/gdg-website-server:latest
-            dhanraj11/gdg-website-server:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/gdg-website-server:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/gdg-website-server:${{ github.sha }}
 
       - name: Build and Push Client_admin Image
         uses: docker/build-push-action@v4
@@ -36,8 +36,8 @@ jobs:
           file: ./Docker/dockerfile.client_admin.prod
           push: true
           tags: |
-            dhanraj11/gdg-website-client-admin:latest
-            dhanraj11/gdg-website-client-admin:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/gdg-website-client-admin:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/gdg-website-client-admin:${{ github.sha }}
           build-args: |
             VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
             VITE_PUBLIC_S3_URL=${{ secrets.VITE_PUBLIC_S3_URL }}
@@ -49,8 +49,8 @@ jobs:
           file: ./Docker/dockerfile.client_main.prod
           push: true
           tags: |
-            dhanraj11/gdg-website-client-main:latest
-            dhanraj11/gdg-website-client-main:${{github.sha}}
+            ${{ secrets.DOCKERHUB_USERNAME }}/gdg-website-client-main:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/gdg-website-client-main:${{github.sha}}
           build-args: |
               VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
               VITE_PUBLIC_S3_URL=${{ secrets.VITE_PUBLIC_S3_URL }}

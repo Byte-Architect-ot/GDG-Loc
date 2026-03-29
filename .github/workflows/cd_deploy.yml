@@ -36,6 +36,7 @@ jobs:
                     export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
                     export AWS_REGION=${{ secrets.AWS_REGION }}
                     export S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+                    export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
                     
                     docker compose -f docker-compose.prod.yml down 
                     rm -f docker-compose.prod.yml
@@ -43,7 +44,7 @@ jobs:
                     rm -rf Nginx
 
                     echo "fetching nginx and docker-compose files..."
-                    git clone --depth 1 https://github.com/gdscwce/GDG_Website.git tmp_repo
+                    git clone --depth 1 https://github.com/${{ github.repository }}.git tmp_repo
                     mv tmp_repo/Nginx ./Nginx
                     mv tmp_repo/docker-compose.prod.yml ./
                     mv tmp_repo/docker-compose.certbot.yml ./
