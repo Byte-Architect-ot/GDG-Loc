@@ -6,6 +6,7 @@ import {
   ExternalLink, Send, Sparkles
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import Contact from './Contact';
 
 const SOCIALS = [
   { id: 2, icon: Linkedin, label: "LinkedIn", href: "#", hoverBg: "hover:bg-[#0077b5]", hoverText: "hover:text-white" },
@@ -47,6 +48,8 @@ const GDGFooter = () => {
   }, []);
 
   return (
+    <>
+    <Contact />
     <footer
       className={`relative overflow-hidden transition-colors duration-300
         ${isDarkMode
@@ -313,6 +316,7 @@ const GDGFooter = () => {
 
       </div>
     </footer>
+  </>
   );
 };
 
