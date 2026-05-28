@@ -1393,7 +1393,7 @@ const First = () => {
                 </span>
               </span>
               <span
-                className="headline-word block text-5xl sm:text-7xl md:text-8xl lg:text-[8rem] font-extrabold tracking-tighter leading-[0.9] bg-clip-text text-transparent"
+                className="headline-word block text-3xl sm:text-6xl md:text-7xl lg:text-[6rem] font-extrabold tracking-tighter leading-[0.9] bg-clip-text text-transparent"
                 style={{
                   fontFamily: FONT_HEADING,
                   backgroundImage: 'linear-gradient(135deg, #4285F4 0%, #34A853 35%, #FBBC04 65%, #EA4335 100%)',

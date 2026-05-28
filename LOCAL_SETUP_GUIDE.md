@@ -268,12 +268,12 @@ rm -f Server/package-lock.json Client_admin/package-lock.json Client_main/packag
 
 | Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| `GET` | `/health` | ❌ | Health check |
-| `POST` | `/admin/signup` | ❌ | Create admin account |
-| `POST` | `/admin/login` | ❌ | Login, returns JWT |
-| `POST` | `/admin/addyear` | ✅ | Add year group |
-| `POST` | `/admin/addevent` | ✅ | Add event |
-| `POST` | `/admin/addmembers` | ✅ | Add members (bulk) |
-| `GET` | `/public/years` | ❌ | List all years |
-| `GET` | `/public/events/:yearId` | ❌ | Events by year |
-| `GET` | `/public/members/:yearId` | ❌ | Members by year |
+| `GET` | `/health` | | Health check |
+| `POST` | `/admin/signup` | | Create admin account |
+| `POST` | `/admin/login` | | Login, returns JWT |
+| `POST` | `/admin/addyear` | | Add year group |
+| `POST` | `/admin/addevent` | | Add event |
+| `POST` | `/admin/addmembers` | | Add members (bulk) |
+| `GET` | `/public/years` | | List all years |
+| `GET` | `/public/events/:yearId` | | Events by year |
+| `GET` | `/public/members/:yearId` | | Members by year |

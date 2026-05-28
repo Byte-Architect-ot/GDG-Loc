@@ -23,15 +23,12 @@
       (function() {
         try {
           // Check localStorage for the key used in your ThemeContext
-          const savedTheme = localStorage.getItem('gdg-theme');
+          const savedTheme = localStorage.getItem('theme');
           
-          // If the theme is dark, or if there's no saved theme (since we want dark default)
-          if (savedTheme === 'dark' || !savedTheme) {
+          if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
-            document.documentElement.style.backgroundColor = '#020817'; // Match your dark background hex
           } else {
             document.documentElement.classList.remove('dark');
-            document.documentElement.style.backgroundColor = '#ffffff';
           }
         } catch (e) {}
       })();

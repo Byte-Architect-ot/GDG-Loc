@@ -2,30 +2,30 @@ import axios from 'axios';
 
 const getBaseUrl = () => {
   const hostname = window.location.hostname;
-  const isLocalhost = hostname === 'localhost' || 
-                      hostname === '127.0.0.1' ||
-                      hostname === '' ||
-                      hostname.startsWith('192.168.') ||
-                      hostname.startsWith('10.') ||
-                      hostname.startsWith('172.') || hostname === '0.0.0.0';
+  const isLocalhost = hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '' ||
+    hostname.startsWith('192.168.') ||
+    hostname.startsWith('10.') ||
+    hostname.startsWith('172.') || hostname === '0.0.0.0';
   const isProduction = !isLocalhost;
   const isHttps = window.location.protocol === 'https:';
-  
+
   // Check for environment variable first (works in both dev and production)
   if (import.meta.env.VITE_API_BASE_URL) {
     let apiUrl = import.meta.env.VITE_API_BASE_URL.trim().replace(/\/$/, '');
-    
+
     // 🔒 CRITICAL: Convert HTTP to HTTPS in production to avoid mixed content blocking
     if (isProduction && isHttps && apiUrl.startsWith('http://')) {
       console.warn('[API] ⚠️ Converting HTTP to HTTPS to avoid mixed content blocking');
       apiUrl = apiUrl.replace('http://', 'https://');
     }
-    
+
     console.log('[API] Using env var:', apiUrl);
     return apiUrl;
   }
-  
-  
+
+
   // 🔑 PRODUCTION: Use proxy if no env var is set
   console.warn('[API] No VITE_API_BASE_URL set, using /api proxy');
   return '/api';
@@ -51,7 +51,7 @@ publicClient.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error('❌ Request Error:', error);
+    console.error('Request Error:', error);
     return Promise.reject(error);
   }
 );
@@ -59,17 +59,17 @@ publicClient.interceptors.request.use(
 // Response interceptor
 publicClient.interceptors.response.use(
   (response) => {
-    console.log('✅ Response:', response.config.url, response.status);
+    console.log('Response:', response.config.url, response.status);
     return response;
   },
   (error) => {
-    console.error('❌ API Error:', {
+    console.error('API Error:', {
       url: error.config?.url,
       status: error.response?.status,
       message: error.message,
       data: error.response?.data
     });
-    
+
     // Helpful debugging
     if (error.code === 'ERR_NETWORK') {
       console.error('💡 Network error - possible causes:');
@@ -77,7 +77,7 @@ publicClient.interceptors.response.use(
       console.error('   - API server down');
       console.error('   - Wrong URL');
     }
-    
+
     return Promise.reject(error);
   }
 );

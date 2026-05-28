@@ -10,12 +10,12 @@ echo "==================================="
 
 # ─── Pre-flight checks ───
 if ! command -v node &> /dev/null; then
-    echo "❌ Node.js is not installed. Please install Node.js >= 18."
+    echo "Node.js is not installed. Please install Node.js >= 18."
     exit 1
 fi
 
 if ! command -v npm &> /dev/null; then
-    echo "❌ npm is not installed. Please install npm."
+    echo "npm is not installed. Please install npm."
     exit 1
 fi
 
@@ -64,7 +64,7 @@ trap 'kill $SERVER_PID $CLIENT_PID 2>/dev/null; wait; exit' SIGINT SIGTERM
 
 echo ""
 echo "==========================================="
-echo " ✅ Both applications are running!"
+echo " Both applications are running!"
 echo " Server:       http://localhost:3000"
 echo " Client_admin: http://localhost:5173"
 echo " Health check: http://localhost:3000/health"

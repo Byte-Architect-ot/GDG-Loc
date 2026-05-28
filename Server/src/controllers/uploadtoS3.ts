@@ -21,7 +21,7 @@ const uploadimage = async (filename: string, filebuffer: Buffer) => {
             console.log("📁 File saved locally:", localKey);
             return localKey;
         } catch (err) {
-            console.error("❌ Local upload failed:", err);
+            console.error("Local upload failed:", err);
             throw err;
         }
     }
@@ -31,17 +31,17 @@ const uploadimage = async (filename: string, filebuffer: Buffer) => {
         const uploadparam = {
             Bucket: process.env.S3_BUCKET_NAME!,
             Key: s3key,
-            Body: filebuffer, 
+            Body: filebuffer,
             // ACL: "public-read",
         }
 
         const command = new PutObjectCommand(uploadparam as any)
         await s3Client!.send(command);
-        console.log("✅ File uploaded successfully:", filename);
+        console.log("File uploaded successfully:", filename);
         return s3key;
-    
-    } catch(err) {
-        console.error("❌ Upload failed:", err);
+
+    } catch (err) {
+        console.error("Upload failed:", err);
         throw err;
     }
 }
