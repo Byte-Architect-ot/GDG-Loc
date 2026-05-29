@@ -150,6 +150,7 @@ certbot/www/*
 node_modules/
 .env
 .env.*
+!.env.example
 dist/
 build/
 uploads/
