@@ -58,7 +58,7 @@ const MemberCard = ({ member, theme, onClick, isExpanded, isDarkMode }) => {
   return (
     <div ref={cardRef} className="relative">
       <motion.div
-        layout
+        layoutId={`card-${member.id}`}
         onClick={() => !isExpanded && onClick(member, cardRef)}
         whileHover={!isExpanded ? { y: -8, scale: 1.02 } : {}}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
@@ -139,9 +139,7 @@ const MemberCard = ({ member, theme, onClick, isExpanded, isDarkMode }) => {
 };
 
 // --- EXPANDED DETAIL (In-place) ---
-const ExpandedDetail = ({ member, theme, onClose, isDarkMode, cardRect }) => {
-  const detailRef = useRef(null);
-
+const ExpandedDetail = ({ member, theme, onClose, isDarkMode }) => {
   // Close on escape
   useEffect(() => {
     const handleEscape = (e) => e.key === 'Escape' && onClose();
@@ -153,56 +151,28 @@ const ExpandedDetail = ({ member, theme, onClose, isDarkMode, cardRect }) => {
     };
   }, [onClose]);
 
-  // Close on click outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (detailRef.current && !detailRef.current.contains(e.target)) {
-        onClose();
-      }
-    };
-    setTimeout(() => document.addEventListener('click', handleClickOutside), 100);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [onClose]);
-
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto">
+    <div className="fixed inset-0 z-[250] flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
+        transition={{ duration: 0.3 }}
+        onClick={onClose}
         className={`
-          fixed inset-0 
+          absolute inset-0 cursor-pointer
           ${isDarkMode ? 'bg-slate-950/90' : 'bg-black/60'}
           backdrop-blur-md
         `}
       />
 
-      {/* Detail Card - Positioned near the clicked card */}
+      {/* Detail Card */}
       <motion.div
-        ref={detailRef}
-        initial={{
-          opacity: 0,
-          scale: 0.9,
-          y: cardRect ? Math.min(cardRect.top - 100, window.innerHeight * 0.1) : 100
-        }}
-        animate={{
-          opacity: 1,
-          scale: 1,
-          y: 0
-        }}
-        exit={{
-          opacity: 0,
-          scale: 0.95,
-          y: 20
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        style={{
-          marginTop: cardRect ? `${Math.max(80, cardRect.top - 50)}px` : '100px'
-        }}
+        layoutId={`card-${member.id}`}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
         className={`
-          relative w-[95%] max-w-lg mx-auto my-8 z-10
+          relative w-full max-w-[280px] sm:max-w-[320px] z-10
           ${isDarkMode
             ? 'bg-slate-900 border border-slate-700'
             : 'bg-white border border-slate-200'
@@ -226,7 +196,7 @@ const ExpandedDetail = ({ member, theme, onClose, isDarkMode, cardRect }) => {
         </button>
 
         {/* Image */}
-        <div className="aspect-[4/3] sm:aspect-[3/2] overflow-hidden relative">
+        <div className="aspect-[3/4] overflow-hidden relative">
           {member.image ? (
             <img
               src={member.image}
@@ -420,7 +390,6 @@ export default function Team() {
   const [loading, setLoading] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const [selectedTheme, setSelectedTheme] = useState(null);
-  const [cardRect, setCardRect] = useState(null);
 
   // Handle scroll offset on page load
   useEffect(() => {
@@ -469,6 +438,7 @@ export default function Team() {
         id: m._id || m.id,
         name: m.memberName || m.name,
         role: role,
+        priority: m.priority !== undefined ? m.priority : 99,
         image: getImageUrl(m.memberImageKey || m.image),
         github: m.github,
         linkedin: m.linkedin,
@@ -477,24 +447,28 @@ export default function Team() {
         email: m.email
       });
     });
+
+    // Sort members within each group by priority
+    Object.keys(groups).forEach(role => {
+      groups[role].sort((a, b) => a.priority - b.priority);
+    });
+
     return groups;
   }, [apiMembers]);
 
   const roles = Object.keys(groupedData).sort((a, b) => {
-    const priority = (r) => {
-      const lower = r.toLowerCase();
-      if (lower.includes('lead') || lower.includes('head') || lower.includes('president')) return 0;
-      if (lower.includes('co-') || lower.includes('vice')) return 1;
-      return 2;
-    };
-    return priority(a) - priority(b);
+    // Determine the minimum priority for each role group
+    const minPriorityA = Math.min(...groupedData[a].map(m => m.priority));
+    const minPriorityB = Math.min(...groupedData[b].map(m => m.priority));
+    
+    // Sort by priority first, then alphabetically by role name if priority is same
+    if (minPriorityA !== minPriorityB) {
+      return minPriorityA - minPriorityB;
+    }
+    return a.localeCompare(b);
   });
 
-  const handleCardClick = (member, cardRef) => {
-    if (cardRef.current) {
-      const rect = cardRef.current.getBoundingClientRect();
-      setCardRect(rect);
-    }
+  const handleCardClick = (member) => {
     setSelectedMember(member);
     const roleIndex = roles.indexOf(member.role);
     setSelectedTheme(getTheme(roleIndex >= 0 ? roleIndex : 0, isDarkMode));
@@ -620,12 +594,8 @@ export default function Team() {
           <ExpandedDetail
             member={selectedMember}
             theme={selectedTheme}
-            onClose={() => {
-              setSelectedMember(null);
-              setCardRect(null);
-            }}
+            onClose={() => setSelectedMember(null)}
             isDarkMode={isDarkMode}
-            cardRect={cardRect}
           />
         )}
       </AnimatePresence>

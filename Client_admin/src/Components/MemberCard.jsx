@@ -38,7 +38,7 @@ function MemberCard({ member, onClick }) {
           {member.memberName}
         </h3>
         <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider truncate">
-          {member.memberBranch || "Unknown Branch"}
+          {member.role || "Member"} (P{member.priority !== undefined ? member.priority : 99}) • {member.memberBranch || "Unknown Branch"}
         </p>
       </div>
     </div>

@@ -3,7 +3,7 @@ import api from "../api/axios";
 
 function AddMembersModal({ yearId, onClose, onSuccess }) {
   const [members, setMembers] = useState([
-    { memberName: "", memberBranch: "", mail: "", linkedin: "" },
+    { memberName: "", memberBranch: "", mail: "", linkedin: "", role: "", priority: "" },
   ]);
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +18,7 @@ function AddMembersModal({ yearId, onClose, onSuccess }) {
   const addRow = () => {
     setMembers([
       ...members,
-      { memberName: "", memberBranch: "", mail: "", linkedin: "" },
+      { memberName: "", memberBranch: "", mail: "", linkedin: "", role: "", priority: "" },
     ]);
   };
 
@@ -38,9 +38,16 @@ function AddMembersModal({ yearId, onClose, onSuccess }) {
 
     try {
       setLoading(true);
+      
+      const processedMembers = members.map(m => ({
+        ...m,
+        role: m.role.trim() || "Member",
+        priority: m.priority !== "" ? Number(m.priority) : 99,
+      }));
+
       const res = await api.post("/admin/addmembers", {
         yearGroupId: yearId,
-        members,
+        members: processedMembers,
       });
 
       if (res.data.ok) {
@@ -137,6 +144,25 @@ function AddMembersModal({ yearId, onClose, onSuccess }) {
                         value={member.linkedin}
                         onChange={(e) =>
                         handleChange(index, "linkedin", e.target.value)
+                        }
+                    />
+
+                    <input
+                        placeholder="Role / Tag (e.g. Lead, Developer)"
+                        className="w-full bg-zinc-900 text-white border border-zinc-700 rounded-lg px-4 py-3 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder-zinc-600 text-sm"
+                        value={member.role}
+                        onChange={(e) =>
+                        handleChange(index, "role", e.target.value)
+                        }
+                    />
+
+                    <input
+                        type="number"
+                        placeholder="Priority (e.g. 1 for Top)"
+                        className="w-full bg-zinc-900 text-white border border-zinc-700 rounded-lg px-4 py-3 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder-zinc-600 text-sm"
+                        value={member.priority}
+                        onChange={(e) =>
+                        handleChange(index, "priority", e.target.value)
                         }
                     />
                 </div>

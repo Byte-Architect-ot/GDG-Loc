@@ -6,12 +6,17 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
   const [member, setMember] = useState(null);
   const fileRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  
+  // Edit state
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedData, setEditedData] = useState({});
 
   // 🔥 Always fetch latest member
   useEffect(() => {
     const fetchMember = async () => {
       const res = await api.get(`/public/member/${memberId}`);
       setMember(res.data.member);
+      setEditedData(res.data.member);
     };
     fetchMember();
   }, [memberId]);
@@ -24,6 +29,29 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
     onUpdate({ _id: memberId, deleted: true });
   };
   
+  const saveMember = async () => {
+    try {
+      setLoading(true);
+      const res = await api.post(`/admin/editmember/${memberId}`, editedData);
+      
+      if (res.data.ok) {
+        setMember(res.data.member);
+        onUpdate(res.data.member);
+        setIsEditing(false);
+      } else {
+        alert(res.data.message || "Failed to update member");
+      }
+    } catch (err) {
+      alert("Error updating member details");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditChange = (field, value) => {
+    setEditedData((prev) => ({ ...prev, [field]: value }));
+  };
 
   /* -------- UPLOAD IMAGE -------- */
   const uploadImage = async (file) => {
@@ -42,6 +70,7 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
     };
 
     setMember(updated);
+    setEditedData(updated);
     onUpdate(updated);
     setLoading(false);
   };
@@ -55,6 +84,7 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
 
     const updated = { ...member, memberImageKey: undefined };
     setMember(updated);
+    setEditedData(updated);
     onUpdate(updated);
     setLoading(false);
   };
@@ -74,7 +104,17 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
         {/* HEADER */}
         <div className="flex justify-between items-start p-6 pb-2">
           <div>
-            <h2 className="text-xl font-bold text-white tracking-tight">{member.memberName}</h2>
+            {isEditing ? (
+                <input 
+                  type="text" 
+                  value={editedData.memberName || ""}
+                  onChange={(e) => handleEditChange("memberName", e.target.value)}
+                  className="text-xl font-bold bg-zinc-800 text-white px-2 py-1 rounded border border-zinc-700 w-full mb-1 outline-none"
+                  placeholder="Member Name"
+                />
+            ) : (
+                <h2 className="text-xl font-bold text-white tracking-tight">{member.memberName}</h2>
+            )}
             <span className="text-xs font-medium text-zinc-500 uppercase tracking-wide">Member Details</span>
           </div>
           <button 
@@ -136,25 +176,55 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
 
           {/* DETAILS LIST */}
           <div className="space-y-3 bg-black/40 p-4 rounded-xl border border-zinc-800/50">
-            <div className="flex justify-between border-b border-zinc-800 pb-2 last:border-0 last:pb-0">
-              <span className="text-sm text-zinc-500">Branch</span>
-              <span className="text-sm font-medium text-white">{member.memberBranch}</span>
-            </div>
-            
-            <div className="flex justify-between border-b border-zinc-800 pb-2 last:border-0 last:pb-0">
-              <span className="text-sm text-zinc-500">Email</span>
-              <span className="text-sm font-medium text-white truncate max-w-[150px]" title={member.mail}>{member.mail || "-"}</span>
+            <div className="flex justify-between items-center border-b border-zinc-800 pb-2 last:border-0 last:pb-0">
+              <span className="text-sm text-zinc-500 shrink-0">Branch</span>
+              {isEditing ? (
+                  <input type="text" value={editedData.memberBranch || ""} onChange={(e) => handleEditChange("memberBranch", e.target.value)} className="bg-zinc-800 text-white text-sm px-2 py-1 rounded w-32 border border-zinc-700 outline-none text-right" />
+              ) : (
+                  <span className="text-sm font-medium text-white text-right">{member.memberBranch}</span>
+              )}
             </div>
 
-            <div className="flex justify-between">
-              <span className="text-sm text-zinc-500">LinkedIn</span>
-              <span className="text-sm font-medium text-white truncate max-w-[150px] text-right">
-                {member.linkedin ? (
-                    <a href={member.linkedin} target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300 hover:underline">
-                        View Profile
-                    </a>
-                ) : "-"}
-              </span>
+            <div className="flex justify-between items-center border-b border-zinc-800 pb-2 last:border-0 last:pb-0">
+              <span className="text-sm text-zinc-500 shrink-0">Role / Tag</span>
+              {isEditing ? (
+                  <input type="text" value={editedData.role || ""} onChange={(e) => handleEditChange("role", e.target.value)} className="bg-zinc-800 text-white text-sm px-2 py-1 rounded w-32 border border-zinc-700 outline-none text-right" />
+              ) : (
+                  <span className="text-sm font-medium text-white text-right">{member.role || "Member"}</span>
+              )}
+            </div>
+
+            <div className="flex justify-between items-center border-b border-zinc-800 pb-2 last:border-0 last:pb-0">
+              <span className="text-sm text-zinc-500 shrink-0">Priority</span>
+              {isEditing ? (
+                  <input type="number" value={editedData.priority !== undefined ? editedData.priority : 99} onChange={(e) => handleEditChange("priority", Number(e.target.value))} className="bg-zinc-800 text-white text-sm px-2 py-1 rounded w-20 border border-zinc-700 outline-none text-right" />
+              ) : (
+                  <span className="text-sm font-medium text-white text-right">{member.priority !== undefined ? member.priority : 99}</span>
+              )}
+            </div>
+            
+            <div className="flex justify-between items-center border-b border-zinc-800 pb-2 last:border-0 last:pb-0">
+              <span className="text-sm text-zinc-500 shrink-0">Email</span>
+              {isEditing ? (
+                  <input type="email" value={editedData.mail || ""} onChange={(e) => handleEditChange("mail", e.target.value)} className="bg-zinc-800 text-white text-sm px-2 py-1 rounded w-32 border border-zinc-700 outline-none text-right" />
+              ) : (
+                  <span className="text-sm font-medium text-white truncate max-w-[150px] text-right" title={member.mail}>{member.mail || "-"}</span>
+              )}
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-zinc-500 shrink-0">LinkedIn</span>
+              {isEditing ? (
+                  <input type="text" value={editedData.linkedin || ""} onChange={(e) => handleEditChange("linkedin", e.target.value)} className="bg-zinc-800 text-white text-sm px-2 py-1 rounded w-32 border border-zinc-700 outline-none text-right" />
+              ) : (
+                  <span className="text-sm font-medium text-white truncate max-w-[150px] text-right">
+                    {member.linkedin ? (
+                        <a href={member.linkedin} target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300 hover:underline">
+                            View Profile
+                        </a>
+                    ) : "-"}
+                  </span>
+              )}
             </div>
           </div>
 
@@ -165,13 +235,43 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
             </div>
           )}
 
-          {/* DELETE MEMBER BUTTON */}
-          <button
-            onClick={deleteMember}
-            className="w-full py-3 rounded-lg text-sm font-bold text-red-500 bg-red-500/10 border border-transparent hover:bg-red-500 hover:text-white transition-all duration-200"
-          >
-            Delete Member
-          </button>
+          {/* ACTION BUTTONS */}
+          <div className="flex gap-3">
+              {isEditing ? (
+                  <>
+                      <button
+                        onClick={() => setIsEditing(false)}
+                        className="flex-1 py-3 rounded-lg text-sm font-bold text-zinc-400 bg-zinc-800 hover:text-white hover:bg-zinc-700 transition-all duration-200"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={saveMember}
+                        className="flex-1 py-3 rounded-lg text-sm font-bold text-black bg-white hover:bg-zinc-200 transition-all duration-200"
+                      >
+                        Save
+                      </button>
+                  </>
+              ) : (
+                  <>
+                      <button
+                        onClick={() => {
+                            setEditedData(member);
+                            setIsEditing(true);
+                        }}
+                        className="flex-1 py-3 rounded-lg text-sm font-bold text-white bg-zinc-800 hover:bg-zinc-700 transition-all duration-200"
+                      >
+                        Edit Details
+                      </button>
+                      <button
+                        onClick={deleteMember}
+                        className="flex-1 py-3 rounded-lg text-sm font-bold text-red-500 bg-red-500/10 border border-transparent hover:bg-red-500 hover:text-white transition-all duration-200"
+                      >
+                        Delete
+                      </button>
+                  </>
+              )}
+          </div>
 
         </div>
       </div>
