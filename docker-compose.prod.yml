@@ -2,8 +2,10 @@ services:
   nginx:
     image: nginx:1.25-alpine
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:80"        # Main Website
+      - "443:443"      # Secure HTTPS (for later)
+      - "3000:3000"    # Backend API
+      - "5173:5173"    # Admin Panel
     volumes:
       - ./Nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./Nginx/sites:/etc/nginx/conf.d:ro
