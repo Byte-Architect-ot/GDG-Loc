@@ -5,7 +5,9 @@
 set -e
 
 echo "==================================="
+
 echo " Starting GDG Server & Client_main "
+
 echo "==================================="
 
 # ─── Pre-flight checks ───
