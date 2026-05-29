@@ -24,7 +24,7 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
   const deleteMember = async () => {
     if (!window.confirm("Delete this member?")) return;
   
-    await api.post(`/admin/deletemember/${memberId}`);
+    await api.post(`/api/admin/deletemember/${memberId}`);
     onClose();
     onUpdate({ _id: memberId, deleted: true });
   };
@@ -32,7 +32,7 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
   const saveMember = async () => {
     try {
       setLoading(true);
-      const res = await api.post(`/admin/editmember/${memberId}`, editedData);
+      const res = await api.post(`/api/admin/editmember/${memberId}`, editedData);
       
       if (res.data.ok) {
         setMember(res.data.member);
@@ -60,7 +60,7 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
 
     setLoading(true);
     const res = await api.post(
-      `/admin/member/${memberId}/image`,
+      `/api/admin/member/${memberId}/image`,
       formData
     );
 

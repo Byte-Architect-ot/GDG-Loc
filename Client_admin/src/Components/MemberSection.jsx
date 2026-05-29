@@ -22,17 +22,17 @@ function MembersSection({ year }) {
       {/* HEADER */}
       <div className="flex justify-between items-end mb-8 border-b border-zinc-900 pb-4">
         <div>
-           <h2 className="text-2xl font-bold text-white tracking-tight">Members</h2>
-           <p className="text-zinc-500 text-sm mt-1 font-medium">
-             {members.length} {members.length === 1 ? 'Member' : 'Members'}
-           </p>
+          <h2 className="text-2xl font-bold text-white tracking-tight">Members</h2>
+          <p className="text-zinc-500 text-sm mt-1 font-medium">
+            {members?.length} {members?.length === 1 ? 'Member' : 'Members'}
+          </p>
         </div>
-        
+
         <button
           onClick={() => setShowAddModal(true)}
           className="bg-white text-black px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-zinc-200 transition-all shadow-lg flex items-center gap-2"
         >
-          <span className="text-lg leading-none">+</span> 
+          <span className="text-lg leading-none">+</span>
           <span>Add Members</span>
         </button>
       </div>
@@ -48,10 +48,10 @@ function MembersSection({ year }) {
         ))}
 
         {/* Empty State (Optional Visual Polish) */}
-        {members.length === 0 && (
-            <div className="col-span-full py-12 text-center text-zinc-600 border border-dashed border-zinc-800 rounded-xl bg-zinc-900/30">
-                No members added to this year yet.
-            </div>
+        {members?.length === 0 && (
+          <div className="col-span-full py-12 text-center text-zinc-600 border border-dashed border-zinc-800 rounded-xl bg-zinc-900/30">
+            No members added to this year yet.
+          </div>
         )}
       </div>
 

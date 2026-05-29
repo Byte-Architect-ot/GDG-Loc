@@ -41,7 +41,7 @@ function EventDetailsModal({ eventId, onClose }) {
     if (!window.confirm("Delete thumbnail?")) return;
 
     setLoading(true);
-    await api.delete(`/admin/${eventId}/thumbnail`);
+    await api.delete(`/api/admin/${eventId}/thumbnail`);
 
     setEventData((prev) => ({
       ...prev,
@@ -57,7 +57,7 @@ function EventDetailsModal({ eventId, onClose }) {
 
     setLoading(true);
     const res = await api.post(
-      `/admin/${eventId}/sub-images`,
+      `/api/admin/${eventId}/sub-images`,
       formData
     );
 
@@ -77,7 +77,7 @@ function EventDetailsModal({ eventId, onClose }) {
 
     setLoading(true);
     await api.delete(
-      `/admin/${eventId}/sub-images/${encodeURIComponent(imageKey)}`
+      `/api/admin/${eventId}/sub-images/${encodeURIComponent(imageKey)}`
     );
 
     setEventData((prev) => ({

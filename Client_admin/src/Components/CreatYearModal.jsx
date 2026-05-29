@@ -10,7 +10,7 @@ function CreateYearModal({ onClose, onSuccess }) {
 
     try {
       setLoading(true);
-      const res = await api.post("/admin/addyear", { year });
+      const res = await api.post("/api/admin/addyear", { year });
 
       if (res.data.ok) {
         onSuccess(res.data.yearGroup); // pass created year

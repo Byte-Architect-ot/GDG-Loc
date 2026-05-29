@@ -14,7 +14,7 @@ function AddEventModal({ yearId, onClose, onSuccess }) {
 
     try {
       setLoading(true);
-      const res = await api.post("/admin/addevent", {
+      const res = await api.post("/api/admin/addevent", {
         yearGroupId: yearId,
         eventName,
         eventInfo,

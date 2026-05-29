@@ -28,7 +28,7 @@ function Dashboard () {
       setYears(res.data.years)
       console.log(res.data.years)
     
-      if (res.data.years.length === 0) {
+      if (res.data.years?.length === 0) {
         setShowCreateModal(true);
       }
     }

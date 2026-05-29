@@ -6,7 +6,7 @@ export default function EventCard({ event, onDeleted, onClick }) {
 
     if (!window.confirm("Delete this event?")) return;
 
-    await api.post(`/admin/deleteevent/${event._id}`);
+    await api.post(`/api/admin/deleteevent/${event._id}`);
     onDeleted(event._id);
   };
 

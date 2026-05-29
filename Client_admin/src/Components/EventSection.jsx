@@ -22,7 +22,7 @@ function EventsSection ({ year }) {
       <div className="flex items-center justify-between mb-6">
         <h2 className='text-2xl font-bold text-white tracking-tight'>Events</h2>
         <span className="text-sm text-zinc-500 font-medium">
-          {events.length} {events.length === 1 ? 'Event' : 'Events'}
+          {events?.length} {events?.length === 1 ? 'Event' : 'Events'}
         </span>
       </div>
 
