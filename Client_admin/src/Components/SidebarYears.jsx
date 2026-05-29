@@ -10,7 +10,7 @@ function SidebarYears ({ years, selectedYear, onSelect, onCreateYear }) {
       </div>
 
       <div className="flex-1 space-y-1 overflow-y-auto">
-        {years.map(year => (
+        {years?.map(year => (
           <div
             key={year._id}
             onClick={() => onSelect(year)}
