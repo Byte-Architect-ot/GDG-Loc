@@ -147,7 +147,7 @@ const MemberCard = ({ data, isDarkMode }) => {
       <div className="absolute inset-0 w-full h-full">
         {data.image ? (
           <img
-            src={`${API_BASE_URL}/uploads/${member.image}`} alt={member.name}
+            src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${data.image}`} alt={data.name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100 pointer-events-none"
           />
         ) : (
@@ -393,7 +393,7 @@ const TeamHorizontalScroll = () => {
       name: member.memberName || member.name || "Member",
       role: member.role || member.position || "Member",
       color: getColorForRole(member.role || member.position || "Member", isDarkMode),
-      image: publicApi.getImageUrl(member.memberImageKey || member.image || member.imageKey || ""),
+      image: member.memberImageKey || member.image || member.imageKey || "",
       github: member.github || "#",
       linkedin: member.linkedin || "#",
       instagram: member.instagram || "#",

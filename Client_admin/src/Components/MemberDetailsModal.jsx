@@ -132,7 +132,7 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
             {member.memberImageKey ? (
               <div className="relative group">
                 <img
-                  src={`https://${ENV.PUBLIC_S3_URL}/${member.memberImageKey}`}
+                  src={`${ENV.BASE_API_URL}/uploads/${member.memberImageKey}`}
                   className="w-full h-56 object-cover rounded-xl border border-zinc-800 shadow-lg"
                   alt={member.memberName}
                 />

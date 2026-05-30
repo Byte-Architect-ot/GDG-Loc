@@ -76,7 +76,7 @@ const MemberCard = ({ member, theme, onClick, isExpanded, isDarkMode }) => {
         <div className="aspect-[3/4] overflow-hidden relative">
           {member.image ? (
             <img
-              src={`${API_BASE_URL}/uploads/${member.image}`} alt={member.name}
+              src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${member.image}`} alt={member.name}
               className={`
                 w-full h-full object-cover transition-all duration-500
                 ${isDarkMode ? 'group-hover:brightness-110' : ''}
@@ -198,7 +198,7 @@ const ExpandedDetail = ({ member, theme, onClose, isDarkMode }) => {
         <div className="aspect-[3/4] overflow-hidden relative">
           {member.image ? (
             <img
-              src={member.image}
+              src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${member.image}`}
               alt={member.name}
               className="w-full h-full object-cover"
             />
@@ -438,7 +438,7 @@ export default function Team() {
         name: m.memberName || m.name,
         role: role,
         priority: m.priority !== undefined ? m.priority : 99,
-        image: getImageUrl(m.memberImageKey || m.image),
+        image: m.memberImageKey || m.image,
         github: m.github,
         linkedin: m.linkedin,
         instagram: m.instagram,

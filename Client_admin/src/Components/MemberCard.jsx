@@ -10,7 +10,7 @@ function MemberCard({ member, onClick }) {
       <div className="relative aspect-4/5 w-full bg-zinc-800 overflow-hidden">
         {member.memberImageKey ? (
           <img
-            src={`https://${ENV.PUBLIC_S3_URL}/${member.memberImageKey}`}
+            src={`${ENV.BASE_API_URL}/uploads/${member.memberImageKey}`}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             alt={member.memberName}
           />
