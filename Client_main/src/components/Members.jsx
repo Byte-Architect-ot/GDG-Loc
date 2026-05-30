@@ -75,8 +75,7 @@ const MemberCard = ({ member, theme, onClick, isExpanded, isDarkMode }) => {
         {/* Image */}
         <div className="aspect-[3/4] overflow-hidden relative">
           {member.image ? (
-            <img
-              src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${member.image}`} alt={member.name}
+            <img src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${member.image}`} alt={member.name}
               className={`
                 w-full h-full object-cover transition-all duration-500
                 ${isDarkMode ? 'group-hover:brightness-110' : ''}

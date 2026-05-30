@@ -9,10 +9,8 @@ function MemberCard({ member, onClick }) {
       {/* IMAGE CONTAINER */}
       <div className="relative aspect-4/5 w-full bg-zinc-800 overflow-hidden">
         {member.memberImageKey ? (
-          <img
-            src={`${ENV.BASE_API_URL}/uploads/${member.memberImageKey}`}
+          <img src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${member.image}`} alt={member.name}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            alt={member.memberName}
           />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-zinc-600 bg-zinc-800/50">
