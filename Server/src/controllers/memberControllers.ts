@@ -13,7 +13,7 @@ const addMembers = async (req: Request, res: Response) => {
     try {
         const { yearGroupId, members } = req.body;
 
-        if (!yearGroupId || !Array.isArray(members) || members.length === 0) {
+        if (!yearGroupId || !Array.isArray(members) || members?.length === 0) {
             await session.abortTransaction();
             session.endSession();
             return res.status(400).json({

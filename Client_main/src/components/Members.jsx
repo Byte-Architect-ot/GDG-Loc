@@ -76,8 +76,7 @@ const MemberCard = ({ member, theme, onClick, isExpanded, isDarkMode }) => {
         <div className="aspect-[3/4] overflow-hidden relative">
           {member.image ? (
             <img
-              src={member.image}
-              alt={member.name}
+              src={`${API_BASE_URL}/uploads/${member.image}`} alt={member.name}
               className={`
                 w-full h-full object-cover transition-all duration-500
                 ${isDarkMode ? 'group-hover:brightness-110' : ''}
@@ -460,7 +459,7 @@ export default function Team() {
     // Determine the minimum priority for each role group
     const minPriorityA = Math.min(...groupedData[a].map(m => m.priority));
     const minPriorityB = Math.min(...groupedData[b].map(m => m.priority));
-    
+
     // Sort by priority first, then alphabetically by role name if priority is same
     if (minPriorityA !== minPriorityB) {
       return minPriorityA - minPriorityB;
@@ -563,7 +562,7 @@ export default function Team() {
                 >
                   <SectionHeader
                     title={role}
-                    count={members.length}
+                    count={members?.length}
                     theme={theme}
                     isDarkMode={isDarkMode}
                   />

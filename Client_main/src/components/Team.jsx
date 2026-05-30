@@ -41,18 +41,18 @@ const roleColors = {
 const getColorForRole = (role, isDarkMode = false) => {
   const colors = isDarkMode ? roleColors.dark : roleColors.light;
   const defaultColor = isDarkMode ? "text-slate-400" : "text-slate-600";
-  
+
   if (colors[role]) {
     return colors[role];
   }
-  
+
   const lowerRole = role?.toLowerCase() || '';
   for (const [key, value] of Object.entries(colors)) {
     if (lowerRole.includes(key.toLowerCase())) {
       return value;
     }
   }
-  
+
   return defaultColor;
 };
 
@@ -91,8 +91,8 @@ const HorizontalTranslateContainer = styled.div.attrs(({ $translateX }) => ({
 // --- 3. HELPER FUNCTIONS ---
 const calcDynamicHeight = (objectWidth) => {
   const vw = window.innerWidth;
-  const paddingRight = window.innerWidth * 0.2; 
-  const viewAllCardWidth = window.innerWidth < 640 ? 244 : 380; 
+  const paddingRight = window.innerWidth * 0.2;
+  const viewAllCardWidth = window.innerWidth < 640 ? 244 : 380;
   return objectWidth - vw + viewAllCardWidth + paddingRight + 500;
 };
 
@@ -100,16 +100,16 @@ const calcDynamicHeight = (objectWidth) => {
 const SkeletonCard = ({ isDarkMode }) => {
   return (
     <div className={`flex-shrink-0 w-[220px] sm:w-[280px] md:w-[360px] lg:w-[380px] h-[320px] sm:h-[400px] md:h-[460px] lg:h-[480px] rounded-xl sm:rounded-2xl overflow-hidden mx-3 sm:mx-4 shadow-lg border transition-colors duration-300
-      ${isDarkMode 
-        ? 'bg-slate-800 border-slate-700' 
+      ${isDarkMode
+        ? 'bg-slate-800 border-slate-700'
         : 'bg-white border-slate-100'}`}>
       <div className={`w-full h-full animate-pulse relative transition-colors duration-300
         ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
         <div className={`absolute inset-0 transition-colors duration-300
-          ${isDarkMode 
-            ? 'bg-gradient-to-t from-slate-800 via-slate-700/40 to-transparent' 
+          ${isDarkMode
+            ? 'bg-gradient-to-t from-slate-800 via-slate-700/40 to-transparent'
             : 'bg-gradient-to-t from-slate-300 via-slate-200/40 to-transparent'}`} />
-        
+
         <div className="absolute bottom-0 w-full p-4 sm:p-6 md:p-8">
           <div className={`h-6 sm:h-8 w-3/4 rounded animate-pulse mb-2 transition-colors duration-300
             ${isDarkMode ? 'bg-slate-600' : 'bg-slate-300'}`} />
@@ -135,26 +135,25 @@ const SkeletonCard = ({ isDarkMode }) => {
 const MemberCard = ({ data, isDarkMode }) => {
   return (
     <motion.div
-      initial={{ y: 80, opacity: 0, scale: 0.95 }} 
-      whileInView={{ y: 0, opacity: 1, scale: 1 }} 
-      viewport={{ once: true, margin: "0px -80px 0px 0px" }} 
+      initial={{ y: 80, opacity: 0, scale: 0.95 }}
+      whileInView={{ y: 0, opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "0px -80px 0px 0px" }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`relative mt-10 flex-shrink-0 w-[220px] sm:w-[280px] md:w-[360px] lg:w-[380px] h-[320px] sm:h-[400px] md:h-[460px] lg:h-[480px] rounded-xl sm:rounded-2xl overflow-hidden mx-3 sm:mx-4 group shadow-lg hover:shadow-2xl transition-all duration-300 border
-        ${isDarkMode 
-          ? 'bg-slate-800 border-slate-700 hover:border-slate-600' 
+        ${isDarkMode
+          ? 'bg-slate-800 border-slate-700 hover:border-slate-600'
           : 'bg-white border-slate-100 hover:border-slate-200'}`}
     >
       <div className="absolute inset-0 w-full h-full">
         {data.image ? (
-          <img 
-            src={data.image} 
-            alt={data.name} 
+          <img
+            src={`${API_BASE_URL}/uploads/${member.image}`} alt={member.name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100 pointer-events-none"
           />
         ) : (
           <div className={`w-full h-full flex items-center justify-center transition-colors duration-300
-            ${isDarkMode 
-              ? 'bg-gradient-to-br from-slate-700 to-slate-800' 
+            ${isDarkMode
+              ? 'bg-gradient-to-br from-slate-700 to-slate-800'
               : 'bg-gradient-to-br from-slate-200 to-slate-300'}`}>
             <span className={`text-6xl sm:text-8xl font-bold transition-colors duration-300
               ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
@@ -170,13 +169,13 @@ const MemberCard = ({ data, isDarkMode }) => {
           <h3 className="text-lg sm:text-2xl md:text-3xl font-bold text-white tracking-wide mb-0.5 sm:mb-1">{data.name}</h3>
           <p className={`text-xs sm:text-base md:text-lg font-medium tracking-wider uppercase ${data.color}`}>{data.role}</p>
         </div>
-        
+
         <div className="w-8 sm:w-10 md:w-12 h-0.5 sm:h-1 bg-white/30 mb-3 sm:mb-5 md:mb-6 rounded-full group-hover:w-full transition-all duration-500" />
 
         <div className="flex gap-2 sm:gap-3 md:gap-4 opacity-1 group-hover:opacity-100 transition-opacity duration-500 delay-100">
           {data.linkedin && data.linkedin !== '#' && (
-            <a 
-              href={data.linkedin} 
+            <a
+              href={data.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="p-1.5 sm:p-2.5 md:p-3 border border-white/20 rounded-full hover:bg-blue-500 hover:border-blue-500 hover:text-white transition-all text-white"
@@ -185,8 +184,8 @@ const MemberCard = ({ data, isDarkMode }) => {
             </a>
           )}
           {data.github && data.github !== '#' && (
-            <a 
-              href={data.github} 
+            <a
+              href={data.github}
               target="_blank"
               rel="noopener noreferrer"
               className="p-1.5 sm:p-2.5 md:p-3 border border-white/20 rounded-full hover:bg-white hover:text-black transition-all text-white"
@@ -195,8 +194,8 @@ const MemberCard = ({ data, isDarkMode }) => {
             </a>
           )}
           {data.instagram && data.instagram !== '#' && (
-            <a 
-              href={data.instagram} 
+            <a
+              href={data.instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="p-1.5 sm:p-2.5 md:p-3 border border-white/20 rounded-full hover:bg-pink-500 hover:border-pink-500 hover:text-white transition-all text-white"
@@ -204,18 +203,18 @@ const MemberCard = ({ data, isDarkMode }) => {
               <Instagram size={14} className="sm:w-5 sm:h-5" />
             </a>
           )}
-          {(!data.linkedin || data.linkedin === '#') && 
-           (!data.github || data.github === '#') && 
-           (!data.instagram || data.instagram === '#') && (
-            <>
-              <div className="p-1.5 sm:p-2.5 md:p-3 border border-white/20 rounded-full text-white/50">
-                <Linkedin size={14} className="sm:w-5 sm:h-5" />
-              </div>
-              <div className="p-1.5 sm:p-2.5 md:p-3 border border-white/20 rounded-full text-white/50">
-                <Github size={14} className="sm:w-5 sm:h-5" />
-              </div>
-            </>
-          )}
+          {(!data.linkedin || data.linkedin === '#') &&
+            (!data.github || data.github === '#') &&
+            (!data.instagram || data.instagram === '#') && (
+              <>
+                <div className="p-1.5 sm:p-2.5 md:p-3 border border-white/20 rounded-full text-white/50">
+                  <Linkedin size={14} className="sm:w-5 sm:h-5" />
+                </div>
+                <div className="p-1.5 sm:p-2.5 md:p-3 border border-white/20 rounded-full text-white/50">
+                  <Github size={14} className="sm:w-5 sm:h-5" />
+                </div>
+              </>
+            )}
         </div>
       </div>
     </motion.div>
@@ -232,24 +231,24 @@ const ViewAllCard = ({ isDarkMode }) => {
       transition={{ duration: 0.5 }}
       className="flex-shrink-0  w-[220px] sm:w-[280px] md:w-[320px] lg:w-[340px] h-[320px] sm:h-[400px] md:h-[460px] lg:h-[480px] flex items-center justify-center mx-3 sm:mx-4"
     >
-      <div 
+      <div
         className={`w-full mt-10 h-full border-2 border-dashed rounded-xl sm:rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group
-          ${isDarkMode 
-            ? 'border-slate-600 bg-slate-800/50 hover:bg-slate-800 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/10' 
+          ${isDarkMode
+            ? 'border-slate-600 bg-slate-800/50 hover:bg-slate-800 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/10'
             : 'border-slate-300 bg-slate-50/50 hover:bg-white hover:border-blue-500 hover:shadow-xl'}`}
-        onClick={() => navigate("/members")} 
+        onClick={() => navigate("/members")}
       >
         <div className={`p-3 sm:p-4 md:p-5 shadow-sm border rounded-full mb-3 sm:mb-4 transition-colors duration-300
-          ${isDarkMode 
-            ? 'bg-slate-700 border-slate-600 text-slate-400 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600' 
+          ${isDarkMode
+            ? 'bg-slate-700 border-slate-600 text-slate-400 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600'
             : 'bg-white border-slate-100 text-slate-400 group-hover:bg-blue-600 group-hover:text-white'}`}>
           <ArrowRight size={20} className="sm:w-7 sm:h-7 md:w-8 md:h-8" />
         </div>
         <h3 className={`text-sm sm:text-lg md:text-xl font-bold uppercase tracking-widest text-center px-2 transition-colors duration-300
-          ${isDarkMode 
-            ? 'text-slate-500 group-hover:text-slate-200' 
+          ${isDarkMode
+            ? 'text-slate-500 group-hover:text-slate-200'
             : 'text-slate-400 group-hover:text-slate-800'}`}>
-          View All <br /> 
+          View All <br />
           <span className={`group-hover:underline transition-colors duration-300
             ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}>
             Members
@@ -315,8 +314,8 @@ const ErrorState = ({ error, onRetry, isDarkMode }) => {
           <button
             onClick={onRetry}
             className={`mt-4 px-4 py-2 rounded-lg transition-colors duration-300
-              ${isDarkMode 
-                ? 'bg-blue-600 text-white hover:bg-blue-500' 
+              ${isDarkMode
+                ? 'bg-blue-600 text-white hover:bg-blue-500'
                 : 'bg-blue-600 text-white hover:bg-blue-700'}`}
           >
             Try Again
@@ -331,21 +330,21 @@ const ErrorState = ({ error, onRetry, isDarkMode }) => {
 const TeamHorizontalScroll = () => {
   const { isDarkMode } = useTheme();
   const { selectedYear, selectedYearId, loading: yearLoading } = useYear();
-  
+
   // State for API data
   const [apiMembers, setApiMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   // State for auto-scroll animation
   const [autoScrollX, setAutoScrollX] = useState(0);
   const [userScrollOffset, setUserScrollOffset] = useState(0);
-  
+
   const containerRef = useRef(null);
   const objectRef = useRef(null);
   const autoScrollRef = useRef(0);
   const userScrollRef = useRef(0);
-  
+
   // Refs for Swipe/Drag logic
   const isDraggingRef = useRef(false);
   const lastTouchXRef = useRef(0);
@@ -361,8 +360,8 @@ const TeamHorizontalScroll = () => {
     try {
       setLoading(true);
       setError(null);
-      
-      if (selectedYear.members && Array.isArray(selectedYear.members) && selectedYear.members.length > 0) {
+
+      if (selectedYear.members && Array.isArray(selectedYear.members) && selectedYear.members?.length > 0) {
         console.log('Team.jsx: Using members from year object:', selectedYear.members);
         setApiMembers(selectedYear.members);
         setLoading(false);
@@ -388,7 +387,7 @@ const TeamHorizontalScroll = () => {
 
   // Transform API members to component format
   const members = useMemo(() => {
-    console.log('Team.jsx: Transforming', apiMembers.length, 'members');
+    console.log('Team.jsx: Transforming', apimembers?.length, 'members');
     const transformed = apiMembers.map((member, index) => ({
       id: member._id || member.id || `member-${index}`,
       name: member.memberName || member.name || "Member",
@@ -407,29 +406,29 @@ const TeamHorizontalScroll = () => {
 
   // Auto-scrolling slider with infinite loop logic
   useEffect(() => {
-    if (members.length === 0) return;
-    
+    if (members?.length === 0) return;
+
     const getCardWidth = () => {
       if (window.innerWidth < 640) return 220 + 24;
       if (window.innerWidth < 768) return 280 + 32;
       if (window.innerWidth < 1024) return 360 + 32;
       return 380 + 32;
     };
-    
+
     const cardWidth = getCardWidth();
-    const setWidth = (members.length + 1) * cardWidth;
-    const scrollSpeed = 0.5; 
-    
+    const setWidth = (members?.length + 1) * cardWidth;
+    const scrollSpeed = 0.5;
+
     let animationFrameId;
     let currentAutoX = autoScrollRef.current;
-    
+
     const animate = () => {
       if (!pausedRef.current) {
         currentAutoX -= scrollSpeed;
       }
-      
+
       const totalPosition = currentAutoX + userScrollRef.current;
-      
+
       if (Math.abs(totalPosition) >= setWidth) {
         const resetAmount = Math.floor(Math.abs(totalPosition) / setWidth) * setWidth;
         if (totalPosition < 0) {
@@ -437,22 +436,22 @@ const TeamHorizontalScroll = () => {
         } else {
           currentAutoX -= resetAmount;
         }
-      } 
-      
+      }
+
       autoScrollRef.current = currentAutoX;
       setAutoScrollX(currentAutoX);
-      
+
       if (pausedRef.current) {
         setUserScrollOffset(userScrollRef.current);
       }
 
       animationFrameId = requestAnimationFrame(animate);
     };
-    
+
     const timeoutId = setTimeout(() => {
       animate();
     }, 100);
-    
+
     return () => {
       clearTimeout(timeoutId);
       if (animationFrameId) {
@@ -477,13 +476,13 @@ const TeamHorizontalScroll = () => {
 
   const handleTouchMove = (e) => {
     if (!isDraggingRef.current) return;
-    
+
     const currentX = e.touches[0].clientX;
     const deltaX = currentX - lastTouchXRef.current;
-    
+
     userScrollRef.current += deltaX * 1.2;
     setUserScrollOffset(userScrollRef.current);
-    
+
     lastTouchXRef.current = currentX;
   };
 
@@ -500,13 +499,13 @@ const TeamHorizontalScroll = () => {
 
   const handleMouseMove = (e) => {
     if (!isDraggingRef.current) return;
-    
+
     const currentX = e.clientX;
     const deltaX = currentX - lastTouchXRef.current;
-    
+
     userScrollRef.current += deltaX * 1.2;
     setUserScrollOffset(userScrollRef.current);
-    
+
     lastTouchXRef.current = currentX;
   };
 
@@ -527,12 +526,12 @@ const TeamHorizontalScroll = () => {
   return (
     <BackgroundWrapper $isDarkMode={isDarkMode}>
       <div id="team" style={{ height: '100vh', position: 'relative', width: '100%' }}>
-        <div 
-          style={{ position: 'sticky', top: 0, height: '100vh', width: '100%', overflow: 'hidden' }} 
+        <div
+          style={{ position: 'sticky', top: 0, height: '100vh', width: '100%', overflow: 'hidden' }}
           ref={containerRef}
         >
           {/* Header */}
-          <motion.div 
+          <motion.div
             className="absolute top-[8%] sm:top-[10%] left-0 w-full text-center z-20 pointer-events-none px-4"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -550,7 +549,7 @@ const TeamHorizontalScroll = () => {
                   ${isDarkMode ? 'bg-blue-900/50' : 'bg-blue-100'}`}></span>
               </span>
             </h1>
-            
+
             {selectedYear && !isLoading && (
               <motion.p
                 initial={{ opacity: 0 }}
@@ -577,13 +576,13 @@ const TeamHorizontalScroll = () => {
             <div className="absolute inset-0 flex items-center justify-center">
               <ErrorState error={error} onRetry={fetchMembers} isDarkMode={isDarkMode} />
             </div>
-          ) : members.length === 0 ? (
+          ) : members?.length === 0 ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <EmptyState isDarkMode={isDarkMode} />
             </div>
           ) : (
-            <HorizontalTranslateContainer 
-              $translateX={autoScrollX + userScrollOffset} 
+            <HorizontalTranslateContainer
+              $translateX={autoScrollX + userScrollOffset}
               ref={objectRef}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
