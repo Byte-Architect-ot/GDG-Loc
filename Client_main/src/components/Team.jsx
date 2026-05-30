@@ -146,7 +146,7 @@ const MemberCard = ({ data, isDarkMode }) => {
     >
       <div className="absolute inset-0 w-full h-full">
         {data.image ? (
-         <img src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${data.image}`} alt={data.name}
+         <img src={`http://13.127.41.215:3000/uploads/${member.image}`} alt={member.name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100 pointer-events-none"
           />
         ) : (

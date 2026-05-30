@@ -131,8 +131,7 @@ function MemberDetailsModal({ memberId, onClose, onUpdate }) {
           <div className="space-y-3">
             {member.memberImageKey ? (
               <div className="relative group">
-                <img
-                  src={`${ENV.BASE_API_URL}/uploads/${member.memberImageKey}`}
+                <img src={`http://13.127.41.215:3000/uploads/${member.image}`} 
                   className="w-full h-56 object-cover rounded-xl border border-zinc-800 shadow-lg"
                   alt={member.memberName}
                 />
